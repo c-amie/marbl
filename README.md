@@ -20,24 +20,35 @@ Marbl generates the buyers links at runtime on the client browser. It is availab
 ***NO!*** The code makes no cross-site requests, provides no telemetary or usage feedback to a control service and there is NO percentage rewriting of your referral code clicks to me or to anyone else. The source code is available in the public domian for that to be verified.
 If you found it useful, please consider showing your support via https://www.c-amie.co.uk/marbl/
 
+## Documentation
+For the full documentation, samples and examples please visit https://www.c-amie.co.uk/marbl/
+
 ## Use with WordPress
 The Marbl WordPress4.7+ short-code plug-in. You can add Marbl links to your posts and pages using the Marbl for WordPress shortcode syntax.
 
 The following are examples of the short-code syntax:
 
-[ marbl type="amazon" search="Intel NUC"]
+[marbl type="amazon" search="Intel NUC"]
 
-[ marbl type="ebay" search="Intel NUC" ]
+[marbl type="ebay" search="Intel NUC" ]
 
-[ marbl type="amazon" search="Intel NUC" size="32" ]
+[marbl type="amazon" search="Intel NUC" size="32" ]
 
-[ marbl type="amazon" asin="B07K9C2VDP" label="Intel BOXNUC8I3BEK3 NUC Mini PC - (Black)" display="both" ]
+[marbl type="amazon" asin="B07K9C2VDP" label="Intel BOXNUC8I3BEK3 NUC Mini PC - (Black)" display="both" ]
 
-[ marbl type="ebay" search="Intel NUC" regions="UK,US,CA" display="text" ]
+[marbl type="ebay" search="Intel NUC" regions="UK,US,CA" display="text" ]
 
-[ marbl type="ebay" search="Intel NUC" regions="CH,FR,BE" display="both" ]
+[marbl type="ebay" search="Intel NUC" regions="CH,FR,BE" display="both" ]
 
 Please visit https://www.c-amie.co.uk/marbl/ to see working examples.
+
+### WordPress Installation
+1. Download the current release zip file
+2. Copy or upload the Marbl folder in the zip file into the wp-content\plugins
+3. In the WordPress dashboard, go to Plugins > Installed plugins
+4. Click 'Activate' beneath "Marbl - Multi-region Affiliate & Referral Buyers Link"
+5. Go to Settings > "Marbl Links for Amazon & eBay"
+6. Configure your preferences and add in your referral codes
 
 ## JavaScript API
 The JavaScript API underpins all implementations of Marbl. The API is simple and can be rapidly embedded as custom module for your CMS or site.
