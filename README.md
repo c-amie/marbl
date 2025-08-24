@@ -57,5 +57,8 @@ Marbl does not have any external dependencies and is written in pure JavaScript,
 
 For more detail on the JavaScript API, please see the [Documentation](https://www.c-amie.co.uk/marbl/documentation/).
 
+## Changelog
+View the changelog at https://www.c-amie.co.uk/marbl/changelog/
+
 ## Warranties
 No warranty is offered or implied for the use of this code in any form, in any jurisdiction. This is beta software. Bugs may be present. Its use is entirely at your own risk.
