@@ -45,3 +45,6 @@ The JavaScript API underpins all implementations of Marbl. The API is simple and
 Marbl does not have any external dependencies and is written in pure JavaScript, making it light weight and easy to implement.
 
 For more detail on the JavaScript API, please see the [Documentation](https://www.c-amie.co.uk/marbl/documentation/).
+
+## Warranties
+No warranty is offered or implied for the use of this code in any form, in any jurisdiction. This is beta software. Bugs may be present. Its use is entirely at your own risk.
