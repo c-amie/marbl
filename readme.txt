@@ -1,15 +1,15 @@
-=== Marbl for Amazon & eBay ===
+=== Marbl Affiliate Links ===
 Contributors: camieuk
 Donate link: http://www.c-amie.co.uk/
-Tags: Amazon, eBay, link, monetization, international, multi-region, buyer, associate, affiliate, partner
+Tags: Amazon, eBay, link, monetization, affiliate
 Requires at least: 4.7
-Tested up to: 6.8.2
-Stable tag: 4.7
+Tested up to: 6.8
+Stable tag: 0.9.21
 Requires PHP: 5.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Embeds a Multi-Region Affiliate & Referral Buyers Link (Marbl) for Amazon store chooser drop-list buyer link into the page at any point the shortcode is added.
+Embeds a user-selectable multi-contry Amazon or eBay store drop-down buyer link into the page at any point the shortcode is added.
 
 == Description ==
 
@@ -105,6 +105,7 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 * [WordPress] Simplified sanitation for WordPress code review
 * [WordPress] Fixed non-functional donate button
 * [WordPress] Code simplifications
+* [WordPress] Added versioning to WordPress resource calls
 * Updated readme.txt for WordPress publishing
 
 = 0.9.20.20240418 =

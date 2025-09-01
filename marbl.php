@@ -1,6 +1,6 @@
 <?php
    /*
-   Plugin Name: Marbl - Multi-region Affiliate & Referral Buyers Link
+   Plugin Name: Marbl Affiliate Links
    Plugin URI: http://www.c-amie.co.uk/marbl
    Description: Embeds a Multi-region Affiliate & Referral Buyers Link (Marbl) for Amazon and eBay. Embed a drop-list buyer link into the page at any point the shortcode is added. Page can include, none, 1 or 1000 different shortcodes. Written in pure JavaScript, with no external dependencies, tracking, privacy issues and no geo-location guesttimation - the user selects their preffered store from your Amazon Associates or eBay Partners list.
    Version: 0.9.21
@@ -39,6 +39,7 @@
 		
 		protected $pluginPath;
 		protected $pluginUrl;
+		public static $Version = '0.9.21';
 		
 		public function __construct() {
 			// Set plugin Path
@@ -324,14 +325,21 @@
 			if (get_option('marbl_general_include_default_css')) {
 				wp_register_style(
 					'marbl-css',
-					plugin_dir_url( __FILE__ ) . 'css/main.css'
+					plugin_dir_url( __FILE__ ) . 'css/main.css',
+					NULL,
+					self::$Version
 				);
 				wp_enqueue_style( 'marbl-css' );
 			}
 
 			wp_enqueue_script(
 				'marbl-js',
-				plugin_dir_url( __FILE__ ) . 'js/Marbl.js'
+				plugin_dir_url( __FILE__ ) . 'js/Marbl.js',
+				NULL,
+				self::$Version,
+				array(
+					'in_footer'  => false,
+				)
 			);
 
 		}
@@ -450,9 +458,8 @@
   <h1>Multi-region Affiliate &amp; Referral Buyers Link (Marbl)</h1>
   <p>Multi-region Affiliate &amp; Referral Buyers Link creates a user-selectable drop list of your Amazon Affiliate store and eBay Partner Network accounts, allowing the user to select their preferred region.</p>
   <p>Marbl does not use IP geo-location, third party services and is strong on protecting your and your users privacy.</p>
-  <?php screen_icon(); ?>
   <div id="marbl_settings_container" style="display: flex; flex-direction: row; flex-wrap: no-wrap; justify-content: flex-start; align-tiems: stretch; background-color: #fcfcfc; padding: 0 16px 16px 8px; clear: both;">
-    <div style="flex-grow: 0; min-width: 140px; width: 140px; margin-right: 8px; max-width: 140px; order: 0;">
+    <div style="flex-grow: 0; min-width: 148px; width: 140px; margin-right: 8px; max-width: 140px; order: 0;">
       <ul id="marbl_settings_tabbar" style="margin-top: 8px;">
         <li id="marbl_settings_button_general" class="button button-primary" style="margin-bottom: 16px; margin-right: 8px; width: 96%;" tabindex="0" onclick="document.getElementById('marbl_settings_general').style.display = 'flex';document.getElementById('marbl_settings_amazon').style.display = 'none';document.getElementById('marbl_settings_ebay').style.display = 'none';document.getElementById('marbl_settings_button_general').classList.add('button-primary');document.getElementById('marbl_settings_button_amazon').classList.remove('button-primary');document.getElementById('marbl_settings_button_ebay').classList.remove('button-primary');"> General Settings</li>
         <li id="marbl_settings_button_amazon"  class="button" style="margin-bottom: 16px; margin-right: 8px; width: 96%;" tabindex="1" onclick="document.getElementById('marbl_settings_general').style.display = 'none';document.getElementById('marbl_settings_amazon').style.display = 'flex';document.getElementById('marbl_settings_ebay').style.display = 'none';document.getElementById('marbl_settings_button_general').classList.remove('button-primary');document.getElementById('marbl_settings_button_amazon').classList.add('button-primary');document.getElementById('marbl_settings_button_ebay').classList.remove('button-primary');"> Amazon Settings</li>
@@ -464,8 +471,8 @@
         <input type="hidden" name="item_name" value="Donation for Marbl" />
         <input type="hidden" name="currency_code" value="GBP" />
         <div style="font-size: smaller; margin-top: 64px;">If you found this free plugin useful, please show your support via<br />
-              <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
-              <a href='https://ko-fi.com/A0A6ZDDYZ' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+              <input type="submit" name="submit" value="Donate with PayPal" class="button button-primary">
+              <a href='https://ko-fi.com/A0A6ZDDYZ' target='_blank' class="button button-primary" style="margin-top: 8px;">Donate with ko-fi.com</a>
         </div>
         </form>
     </div>
