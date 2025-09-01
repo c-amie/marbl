@@ -1,9 +1,9 @@
-=== Marbl for Amazon ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: http://www.c-amie.co.uk/qlink/?id=166
+=== Marbl for Amazon & eBay ===
+Contributors: camieuk
+Donate link: http://www.c-amie.co.uk/
 Tags: Amazon, eBay, link, monetization, international, multi-region, buyer, associate, affiliate, partner
 Requires at least: 4.7
-Tested up to: 6.5.2
+Tested up to: 6.8.2
 Stable tag: 4.7
 Requires PHP: 5.2.4
 License: GPLv2 or later
@@ -13,30 +13,47 @@ Embeds a Multi-Region Affiliate & Referral Buyers Link (Marbl) for Amazon store 
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+The `Multi-region Affiliate & Referral Buyers Link` plugin, or Marbl is a simple plugin designed to allow a single affiliate
+link to be present the browser with a list of national flags so that they can select their own home marketplace and be
+redirected towards the correct affiliate site and language without relying on external tools.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+The plugin features include:
 
-A few notes about the sections above:
+*   Supports Amazon Affiliates and eBay Partner Networks (EPN)
+*   Allows affiliate schemes between the two in the following geographic locations, each with their own scheme ID:
+    * Austria
+    * Australia
+    * Belgium
+    * Brazil
+    * Canada
+    * China
+    * France
+    * Germany
+    * Ireland
+    * India
+    * Italy
+    * Japan
+    * Mexico
+    * Netherlands
+    * Poland
+    * Saudi Arabia
+    * Singapore
+    * Spain
+    * Sweden
+    * Switzerland
+    * United Arab Emirates
+    * United Kingdom
+    * United States
+*   A full shortcode API
+*   A full JavaScript API for inclusion on pages outside of WordPress
+*   NO telemetry
+*   NO tracking
+*   NO redirecting of your affiliate scheme links EVER
+*   Customisable CSS/national flags via the specification of a custom resources folder
 
-*   "Contributors" is a comma separated list of wordpress.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+For examples and the full documentation please visit https://www.c-amie.co.uk/marbl/
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+To view the source code please visit https://github.com/c-amie/marbl
 
 == Installation ==
 
@@ -83,6 +100,12 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.9.21.20250901 =
+* [WordPress] Simplified sanitation for WordPress code review
+* [WordPress] Fixed non-functional donate button
+* [WordPress] Code simplifications
+* Updated readme.txt for WordPress publishing
 
 = 0.9.20.20240418 =
 * [JavaScript] rel="nofollow" now writes "rel="nofollow sponsored"
@@ -221,36 +244,3 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 = 0.1.0.20180429 =
 * Initial release
 * [JavaScript] Standalone JavaScript File for www.c-amie.co.uk
-
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
-

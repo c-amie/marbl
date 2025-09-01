@@ -3,7 +3,7 @@
    Plugin Name: Marbl - Multi-region Affiliate & Referral Buyers Link
    Plugin URI: http://www.c-amie.co.uk/marbl
    Description: Embeds a Multi-region Affiliate & Referral Buyers Link (Marbl) for Amazon and eBay. Embed a drop-list buyer link into the page at any point the shortcode is added. Page can include, none, 1 or 1000 different shortcodes. Written in pure JavaScript, with no external dependencies, tracking, privacy issues and no geo-location guesttimation - the user selects their preffered store from your Amazon Associates or eBay Partners list.
-   Version: 0.9.20
+   Version: 0.9.21
    Author: C:Amie
    Author URI: http://www.c-amie.co.uk/
    License: GPLv2 or later.
@@ -31,7 +31,7 @@
 	 *   [marbl type="amazon" region="UK,CA" isbn="0593077180" size="48"]
 	 *   [marbl type="amazon" region="ALL" search="Intel NUC"]								// If there is a registered Amazon Associates ID / Country Code (or is 'null'), create a link for it in the output
 	 *   [marbl type="amazon" search="Intel NUC"]											// Same as above, without the explicit all
-	 *   [marbl type="amazon" asin="B01N6SRT4H" label="buy now on Amazon" display=TEXT]	// Write buy 'now on Amazon' as the trigger for the drop menu with no icon
+	 *   [marbl type="amazon" asin="B01N6SRT4H" label="buy now on Amazon" display=TEXT]		// Write buy 'now on Amazon' as the trigger for the drop menu with no icon
 	 *   [marbl type="amazon" region="UK,CA,ES" isbn="0593077180"]							// Assuming that ES doesn't have a Associates ID and isn't set to null in the Associates ID, this will force ES to display as a link
 	 *   [marbl type="amazon" region="MX,FR,UK,IN" isbn="0593077180"]						// Writes them out in the order MX,FR,UK,IN
 	 */
@@ -148,14 +148,14 @@
 				return 'You must provide a either an ASIN, ISBN or a Search String';
 				//die();
 			} else {
-				$strRegions		= json_encode(utf8_encode(trim(str_replace(' ', '', $strRegions))));
+				$strRegions		= utf8_encode(trim(str_replace(' ', '', $strRegions)));
 				$strLabel		= str_replace('&amp;quot;', '"', $strLabel);	// Search for quotation marks &quot; coming in (double escaped) from Wordpress's sanitisation and restore to "
-				$strLabel		= json_encode(utf8_encode(trim($strLabel)));	// Make safe to paste into JavaScript
+				$strLabel		= utf8_encode(trim($strLabel));					// Make safe to paste into JavaScript
 				$strFreetext	= str_replace('&amp;quot;', '"', $strFreetext);
-				$strFreetext	= json_encode(utf8_encode(trim($strFreetext)));
-				$strAsin		= json_encode(utf8_encode(trim($strAsin)));
-				$strIsbn		= json_encode(utf8_encode(trim($strIsbn)));
-				$iSize			= sprintf("%d", $strSize);		// Numeric or 0
+				$strFreetext	= utf8_encode(trim($strFreetext));
+				$strAsin		= utf8_encode(trim($strAsin));
+				$strIsbn		= utf8_encode(trim($strIsbn));
+				$iSize			= sprintf("%d", $strSize);						// Numeric or 0
 				switch (strtoupper($strDisplay)) {
 					case 'IMAGE':
 						$strDisplay	= 1;		// Image Only
@@ -194,35 +194,31 @@
 				$strAssociateIds = '';
 				for ($i = 0; $i < count($arrCountryCodes); $i++) {
 					if (get_option('marbl_amazon_link_associate_id_' . strtolower($arrCountryCodes[$i])) != '') {
-						$strAssociateIds .= 'marblAmazon.addAssociateId(\'' . (strtoupper($arrCountryCodes[$i])) .'\', \'' . get_option('marbl_amazon_link_associate_id_' . (strtolower($arrCountryCodes[$i]))) . '\');';
+						$strAssociateIds .= 'marblAmazon.addAssociateId(\'' . esc_js(strtoupper($arrCountryCodes[$i])) .'\', \'' . esc_js(get_option('marbl_amazon_link_associate_id_' . (strtolower($arrCountryCodes[$i])))) . '\');';
 					}
 				}
 
 				if (get_option('marbl_general_custom_resources_path') != null) {
-					$strAssetsPath = get_option('marbl_general_custom_resources_path');
+					$strAssetsPath = esc_url(get_option('marbl_general_custom_resources_path'));
 				} else {
-					$strAssetsPath = plugin_dir_url( __FILE__ );
+					$strAssetsPath = esc_url(plugin_dir_url( __FILE__ ));
 				}
 
 				$strDisclaimerCfg = '';
 				if (get_option('marbl_amazon_show_disclaimer')) {
-					if (get_option('marbl_amazon_disclaimer_position') === 'TOP') {
-						$strDisclaimerCfg = 'marblAmazon.DisclaimerPosition = marblAmazon.TOP;';
-					} else {
-						$strDisclaimerCfg = 'marblAmazon.DisclaimerPosition = marblAmazon.BOTTOM;';
-					}
-					$strDisclaimerCfg .= 'marblAmazon.DisclaimerText = \'' . get_option('marbl_amazon_disclaimer') . '\';';
+					$strDisclaimerCfg = 'marblAmazon.DisclaimerPosition = marblAmazon.' . ((get_option('marbl_amazon_disclaimer_position') === 'TOP') ? 'TOP' : 'BOTTOM') . ';';
+					$strDisclaimerCfg .= 'marblAmazon.DisclaimerText = \'' . esc_js(get_option('marbl_amazon_disclaimer')) . '\';';
 				}
 
 				return 
 				'<script type="text/javascript">
-					var marblAmazon = new MarblAmazonLink(\'' . $strAssetsPath . '\');
+					var marblAmazon = new MarblAmazonLink(\'' . esc_url($strAssetsPath) . '\');
 						' . $strAssociateIds . '
 						marblAmazon.DisplayFlags = ' . ((get_option('marbl_general_link_show_flags')) ? 'true' : 'false') . ';
 						marblAmazon.OpenInNewWindow = ' . ((get_option('marbl_general_link_open_new_window')) ? 'true' : 'false') . ';
 						marblAmazon.LinksNoFollow = ' . ((get_option('marbl_general_link_link_nofollow')) ? 'true' : 'false') . ';
 						' . $strDisclaimerCfg . '
-						marblAmazon.createLink(' . ($strRegions) . ', ' . ($strLabel) .', ' . ($strFreetext) . ', ' . ($strAsin) . ', ' . ($strIsbn) . ', ' . ($strSize) . ', ' . ($strDisplay) . ');
+						marblAmazon.createLink(' . json_encode(esc_js($strRegions)) . ', ' . json_encode(esc_js($strLabel)) .', ' . json_encode(esc_js($strFreetext)) . ', ' . json_encode(esc_js($strAsin)) . ', ' . json_encode(esc_js($strIsbn)) . ', ' . esc_js($strSize) . ', ' . esc_js($strDisplay) . ');
 				</script>'; // Note: String parameters are not wrapped in " " because json_encode appends this itself
 			}
 		}
@@ -237,13 +233,13 @@
 				return 'You must provide a either an Item Number, Store Link ID or a Search String';
 				//die();
 			} else {
-				$strRegions		= json_encode(utf8_encode(trim(str_replace(' ', '', $strRegions))));
+				$strRegions		= utf8_encode(trim(str_replace(' ', '', $strRegions)));
 				$strLabel		= str_replace('&amp;quot;', '"', $strLabel);	// Search for quotation marks &quot; coming in (double escaped) from Wordpress's sanitisation and restore to "
-				$strLabel		= json_encode(utf8_encode(trim($strLabel)));	// Make safe to paste into JavaScript
+				$strLabel		= utf8_encode(trim($strLabel));	// Make safe to paste into JavaScript
 				$strFreetext	= str_replace('&amp;quot;', '"', $strFreetext);
-				$strFreetext	= json_encode(utf8_encode(trim($strFreetext)));
-				$strItemId		= json_encode(utf8_encode(trim($strItemId)));
-				$strStoreId		= json_encode(utf8_encode(trim($strStoreId)));
+				$strFreetext	= utf8_encode(trim($strFreetext));
+				$strItemId		= utf8_encode(trim($strItemId));
+				$strStoreId		= utf8_encode(trim($strStoreId));
 				$iSize			= sprintf("%d", $strSize);		// Numeric or 0
 				switch (strtoupper($strDisplay)) {
 					case 'IMAGE':
@@ -281,7 +277,7 @@
 
 				// If there is a custom Campaign ID, use it, else fall back to the default one.
 				if (isset($strCampaign) && ($strCampaign != '')) {
-					$strCampaignId = 'marblEbay.CampaignId = \'' . $strCampaign . '\';';
+					$strCampaignId = 'marblEbay.CampaignId = \'' . esc_js($strCampaign) . '\';';
 				} else {
 					$strCampaignId = 'marblEbay.CampaignId = \'' . get_option('marbl_ebay_default_campaign_id') . '\';';
 				}
@@ -290,36 +286,32 @@
 				$strPermittedRegions = '';
 				foreach($arrCountryCodes as $strCountryCode) {
 					if (get_option('marbl_ebay_region_' . strtolower($strCountryCode) . '_enabled')) {
-						$strPermittedRegions .= 'marblEbay.addRegion(\'' . (strtoupper($strCountryCode)) .'\');';
+						$strPermittedRegions .= 'marblEbay.addRegion(\'' . esc_js(strtoupper($strCountryCode)) .'\');';
 					}
 				}
 				
 				if (get_option('marbl_general_custom_resources_path') != null) {
-					$strAssetsPath = get_option('marbl_general_custom_resources_path');
+					$strAssetsPath = esc_url(get_option('marbl_general_custom_resources_path'));
 				} else {
-					$strAssetsPath = plugin_dir_url( __FILE__ );
+					$strAssetsPath = esc_url(plugin_dir_url( __FILE__ ));
 				}
 
 				$strDisclaimerCfg = '';
 				if (get_option('marbl_ebay_show_disclaimer')) {
-					if (get_option('marbl_ebay_disclaimer_position') == 'TOP') {
-						$strDisclaimerCfg = 'marblEbay.DisclaimerPosition = marblEbay.TOP;';
-					} else {
-						$strDisclaimerCfg = 'marblEbay.DisclaimerPosition = marblEbay.BOTTOM;';
-					}
-					$strDisclaimerCfg .= 'marblEbay.DisclaimerText = \'' . get_option('marbl_ebay_disclaimer') . '\';';
+					$strDisclaimerCfg = 'marblEbay.DisclaimerPosition = marblEbay.' . ((get_option('marbl_general_link_show_flags')) ? 'TOP' : 'BOTTOM') . ';';
+					$strDisclaimerCfg .= 'marblEbay.DisclaimerText = \'' . esc_js(get_option('marbl_ebay_disclaimer')) . '\';';
 				}
 
 				return 
 				'<script type="text/javascript">
-					var marblEbay = new MarblEbayLink(\'' . $strAssetsPath . '\');
+					var marblEbay = new MarblEbayLink(\'' . esc_url($strAssetsPath) . '\');
 						' . $strCampaignId . '
 						' . $strPermittedRegions . '
 						marblEbay.DisplayFlags = ' . ((get_option('marbl_general_link_show_flags')) ? 'true' : 'false') . ';
 						marblEbay.OpenInNewWindow = ' . ((get_option('marbl_general_link_open_new_window')) ? 'true' : 'false') . ';
 						marblEbay.LinksNoFollow = ' . ((get_option('marbl_general_link_link_nofollow')) ? 'true' : 'false') . ';
 						' . $strDisclaimerCfg . '
-						marblEbay.createLink(' . ($strRegions) . ', ' . ($strLabel) .', ' . ($strFreetext) . ', ' . ($strItemId) . ', ' . ($strStoreId) . ', ' . ($strSize) . ', ' . ($strDisplay) . ');
+						marblEbay.createLink(' . json_encode(esc_js($strRegions)) . ', ' . json_encode(esc_js($strLabel)) .', ' . json_encode(esc_js($strFreetext)) . ', ' . json_encode(esc_js($strItemId)) . ', ' . json_encode(esc_js($strStoreId)) . ', ' . json_encode(esc_js($strSize)) . ', ' . json_encode(esc_js($strDisplay)) . ');
 				</script>'; // Note: String parameters are not wrapped in " " because json_encode appends this itself
 			}
 		}
@@ -466,14 +458,16 @@
         <li id="marbl_settings_button_amazon"  class="button" style="margin-bottom: 16px; margin-right: 8px; width: 96%;" tabindex="1" onclick="document.getElementById('marbl_settings_general').style.display = 'none';document.getElementById('marbl_settings_amazon').style.display = 'flex';document.getElementById('marbl_settings_ebay').style.display = 'none';document.getElementById('marbl_settings_button_general').classList.remove('button-primary');document.getElementById('marbl_settings_button_amazon').classList.add('button-primary');document.getElementById('marbl_settings_button_ebay').classList.remove('button-primary');"> Amazon Settings</li>
         <li id="marbl_settings_button_ebay"    class="button" style="margin-bottom: 16px; margin-right: 8px; width: 96%;" tabindex="2" onclick="document.getElementById('marbl_settings_general').style.display = 'none';document.getElementById('marbl_settings_amazon').style.display = 'none';document.getElementById('marbl_settings_ebay').style.display = 'flex';document.getElementById('marbl_settings_button_general').classList.remove('button-primary');document.getElementById('marbl_settings_button_amazon').classList.remove('button-primary');document.getElementById('marbl_settings_button_ebay').classList.add('button-primary');"> eBay Settings</li>
       </ul>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="padding: 0px; margin: 0px;">
-    <input name="cmd" value="_s-xclick" type="hidden">
-    <input name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-            " type="hidden">
-    <div style="font-size: smaller; margin-top: 64px;">If you found this free plugin useful, please show your support<br />
-      <input type="submit" name="submit" value="Donate" class="button button-primary">
-    </div>
-  </form>
+      <form action="https://www.paypal.com/donate" method="post" target="_top">
+        <input type="hidden" name="business" value="ZGA5JPWAG4FYL" />
+        <input type="hidden" name="no_recurring" value="0" />
+        <input type="hidden" name="item_name" value="Donation for Marbl" />
+        <input type="hidden" name="currency_code" value="GBP" />
+        <div style="font-size: smaller; margin-top: 64px;">If you found this free plugin useful, please show your support via<br />
+              <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+              <a href='https://ko-fi.com/A0A6ZDDYZ' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+        </div>
+        </form>
     </div>
     <div id="marbl_settings_general" style="flex-grow: 2; order: 1;">
       <form method="post" action="options.php">
@@ -528,7 +522,7 @@
               <label for="marbl_general_custom_styles_path">Path to custom style resources</label>
             </td>
             <td valign="top">
-              <input type="text" id="marbl_general_custom_resources_path" name="marbl_general_custom_resources_path" value="<?php echo get_option('marbl_general_custom_resources_path') ?>" style="width: 99%;" />
+              <input type="text" id="marbl_general_custom_resources_path" name="marbl_general_custom_resources_path" value="<?php echo esc_attr(get_option('marbl_general_custom_resources_path')) ?>" style="width: 99%;" />
               <div style="font-size: smaller;"><strong>{Optional}</strong> This should be the root path containing ./css/main.css and ./images/&lt;custom_image_files&gt;</div>
               <div style="font-size: smaller;">It can be a relative path (/static/marbl/) or an absolute path (http://www.mysite.com/static/marbl/)</div>
               <div style="font-size: smaller;">See the <a href="https://www.c-amie.co.uk/marbl/guides/customising-the-look-of-marbl/">Marbl documentation</a> for more information on how to use custom styles and images.</div>
@@ -580,7 +574,7 @@
             <div style="display: flex;">
                 <div style="width: 180px;">Text</div>
                 <div style="flex-grow: 2;">
-                    <div><input type="text" id="marbl_amazon_disclaimer" name="marbl_amazon_disclaimer" value="<?php echo get_option('marbl_amazon_disclaimer') ?>" placeholder="Enter your message here..." style="width: 99%;" /></div>
+                    <div><input type="text" id="marbl_amazon_disclaimer" name="marbl_amazon_disclaimer" value="<?php echo esc_attr(get_option('marbl_amazon_disclaimer')) ?>" placeholder="Enter your message here..." style="width: 99%;" /></div>
                 </div>
             </div>
 			<?php } ?>
@@ -590,9 +584,9 @@
             <table>
               <?php for ($i = 0; $i < count($arrCountryCodes); $i++) { ?>
               <tr valign="top">
-                <td scope="row"><img src="<?php echo plugin_dir_url( __FILE__ ) . 'images/' . strtoupper($arrCountryCodes[$i]) . '.gif'; ?>" alt="<?php echo strtoupper($arrCountryCodes[$i]); ?> Flag" title="<?php echo strtoupper($arrCountryCodes[$i]); ?> Flag" style="width: 16px;" />
-                  <label for="marbl_amazon_link_associate_id_<?php echo strtolower($arrCountryCodes[$i]); ?>"><?php echo $this->getCountryName(strtoupper($arrCountryCodes[$i])); ?></label></td>
-                <td><input type="text" id="marbl_amazon_link_associate_id_<?php echo strtolower($arrCountryCodes[$i]); ?>" name="marbl_amazon_link_associate_id_<?php echo strtolower($arrCountryCodes[$i]); ?>" value="<?php echo get_option('marbl_amazon_link_associate_id_' . strtolower($arrCountryCodes[$i])); ?>" /></td>
+                <td scope="row"><img src="<?php echo esc_url(plugin_dir_url( __FILE__ ) . 'images/' . strtoupper($arrCountryCodes[$i]) . '.gif'); ?>" alt="<?php echo esc_attr(strtoupper($arrCountryCodes[$i])); ?> Flag" title="<?php echo esc_attr(strtoupper($arrCountryCodes[$i])); ?> Flag" style="width: 16px;" />
+                  <label for="marbl_amazon_link_associate_id_<?php echo esc_attr(strtolower($arrCountryCodes[$i])); ?>"><?php echo esc_html($this->getCountryName(strtoupper($arrCountryCodes[$i]))); ?></label></td>
+                <td><input type="text" id="marbl_amazon_link_associate_id_<?php echo esc_attr(strtolower($arrCountryCodes[$i])); ?>" name="marbl_amazon_link_associate_id_<?php echo esc_attr(strtolower($arrCountryCodes[$i])); ?>" value="<?php echo esc_attr(get_option('marbl_amazon_link_associate_id_' . strtolower($arrCountryCodes[$i]))); ?>" /></td>
               </tr>
               <?php } ?>
             </table>
@@ -631,7 +625,7 @@
             <p>To include a quotation mark (&quot;) in the search or label field</p>
             <code>[marbl type="amazon" search="2&amp;quot; lead pipe" label="2&amp;quot; lead pipe"]</code>
           </div>
-	      <div> <img src="<?php echo $this->pluginUrl; ?>/images/amazon-16x16.png" width="16" height="16" alt="Amazon 16x16 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/amazon-24x24.png" width="24" height="24" alt="Amazon 24x24 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/amazon-32x32.png" width="32" height="32" alt="Amazon 32x32 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/amazon-48x48.png" width="48" height="48" alt="Amazon 48x48 icon" /> </div>
+	      <div> <img src="<?php echo esc_url($this->pluginUrl); ?>/images/amazon-16x16.png" width="16" height="16" alt="Amazon 16x16 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/amazon-24x24.png" width="24" height="24" alt="Amazon 24x24 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/amazon-32x32.png" width="32" height="32" alt="Amazon 32x32 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/amazon-48x48.png" width="48" height="48" alt="Amazon 48x48 icon" /> </div>
         </div>
       </form>
     </div>
@@ -677,7 +671,7 @@
             <div style="display: flex;">
                 <div style="width: 180px;">Text</div>
                 <div style="flex-grow: 2;">
-                    <div><input type="text" id="marbl_ebay_disclaimer" name="marbl_ebay_disclaimer" value="<?php echo get_option('marbl_ebay_disclaimer') ?>" placeholder="Enter your message here..." style="width: 99%;" /></div>
+                    <div><input type="text" id="marbl_ebay_disclaimer" name="marbl_ebay_disclaimer" value="<?php echo esc_attr(get_option('marbl_ebay_disclaimer')) ?>" placeholder="Enter your message here..." style="width: 99%;" /></div>
                 </div>
             </div>
 			<?php } ?>
@@ -690,7 +684,7 @@
             <label for="marbl_ebay_default_campaign_id">Default Campaign ID:</label>
             </td>
             <td valign="top">
-            <input type="text" id="marbl_ebay_default_campaign_id" name="marbl_ebay_default_campaign_id" value="<?php echo get_option('marbl_ebay_default_campaign_id'); ?>" /><br />
+            <input type="text" id="marbl_ebay_default_campaign_id" name="marbl_ebay_default_campaign_id" value="<?php echo esc_attr(get_option('marbl_ebay_default_campaign_id')); ?>" /><br />
             <small>This is a 10-digit numeric value that is accessed and managed via the <a href="https://epn.ebay.com/campaigns">Campaigns section of your EPN Portal</a>. A default compaign will have been created for you at registration.</small>
             </td>
             </tr>
@@ -700,13 +694,13 @@
               <?php foreach($arrCountryCodes as $iVectorId => $strCountryCode) { ?>
               <tr valign="top">
                 <td scope="row">
-                <img src="<?php echo plugin_dir_url( __FILE__ ) . 'images/' . strtoupper($strCountryCode) . '.gif'; ?>" alt="<?php echo $this->getCountryName(strtoupper($strCountryCode)); ?> Flag" title="<?php echo $this->getCountryName(strtoupper($strCountryCode)); ?> Flag" style="width: 16px;" /> <?php echo $this->getCountryName(strtoupper($strCountryCode)); ?> 
+                <img src="<?php echo esc_url(plugin_dir_url( __FILE__ ) . 'images/' . strtoupper($strCountryCode) . '.gif'); ?>" alt="<?php echo esc_attr($this->getCountryName(strtoupper($strCountryCode))); ?> Flag" title="<?php echo esc_attr($this->getCountryName(strtoupper($strCountryCode))); ?> Flag" style="width: 16px;" /> <?php echo esc_html($this->getCountryName(strtoupper($strCountryCode))); ?> 
                 </td>
                 <td><label>
-                    <input type="radio" id="marbl_ebay_region_<?php echo strtolower($strCountryCode); ?>_enabled_true" name="marbl_ebay_region_<?php echo strtolower($strCountryCode); ?>_enabled" value="1"<?php echo (get_option('marbl_ebay_region_' . strtolower($strCountryCode) . '_enabled')) ? ' checked="checked"' : ''; ?> />
+                    <input type="radio" id="marbl_ebay_region_<?php echo esc_attr(strtolower($strCountryCode)); ?>_enabled_true" name="marbl_ebay_region_<?php echo esc_attr(strtolower($strCountryCode)); ?>_enabled" value="1"<?php echo (get_option('marbl_ebay_region_' . strtolower($strCountryCode) . '_enabled')) ? ' checked="checked"' : ''; ?> />
                     Show</label>
                   <label>
-                    <input type="radio" id="marbl_ebay_region_<?php echo strtolower($strCountryCode); ?>_enabled_false" name="marbl_ebay_region_<?php echo strtolower($strCountryCode); ?>_enabled" value="0"<?php echo (!get_option('marbl_ebay_region_' . strtolower($strCountryCode) . '_enabled')) ? ' checked="checked"' : ''; ?> />
+                    <input type="radio" id="marbl_ebay_region_<?php echo esc_attr(strtolower($strCountryCode)); ?>_enabled_false" name="marbl_ebay_region_<?php echo esc_attr(strtolower($strCountryCode)); ?>_enabled" value="0"<?php echo (!get_option('marbl_ebay_region_' . strtolower($strCountryCode) . '_enabled')) ? ' checked="checked"' : ''; ?> />
                     Hide</label></td>
               </tr>
               <?php } ?>
@@ -745,7 +739,7 @@
             <p>To include a quotation mark (&quot;) in the search or label field</p>
             <code>[marbl type="ebay" search="2&amp;quot; lead pipe" label="2&amp;quot; lead pipe"]</code>
           </div>
-	      <div> <img src="<?php echo $this->pluginUrl; ?>/images/eBay-16x16.png" width="16" height="16" alt="Amazon 16x16 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/eBay-24x24.png" width="24" height="24" alt="Amazon 24x24 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/eBay-32x32.png" width="32" height="32" alt="Amazon 32x32 icon" /><br /><img src="<?php echo $this->pluginUrl; ?>/images/eBay-48x48.png" width="48" height="48" alt="Amazon 48x48 icon" /> </div>
+	      <div> <img src="<?php echo esc_url($this->pluginUrl); ?>/images/eBay-16x16.png" width="16" height="16" alt="Amazon 16x16 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/eBay-24x24.png" width="24" height="24" alt="Amazon 24x24 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/eBay-32x32.png" width="32" height="32" alt="Amazon 32x32 icon" /><br /><img src="<?php echo esc_url($this->pluginUrl); ?>/images/eBay-48x48.png" width="48" height="48" alt="Amazon 48x48 icon" /> </div>
         </div>
       </form>
 
