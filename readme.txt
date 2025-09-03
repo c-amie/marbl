@@ -4,8 +4,8 @@ Donate link: http://www.c-amie.co.uk/
 Tags: Amazon, eBay, link, monetization, affiliate
 Requires at least: 4.7
 Tested up to: 6.8
-Stable tag: 0.9.21
-Requires PHP: 5.2.4
+Stable tag: 0.9.22
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,13 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.9.22.20250903 =
+* [WordPress] Changed minimum PHP version to 7.0
+* [WordPress] Removed calls to deprecated utf8_encode()
+* [WordPress] Removed sanitisation calls that used json_encode()
+* [WordPress] Added if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+* [WordPress] Renamed main WordPress file marbl.php -> marbl-affiliate-links.php
 
 = 0.9.21.20250901 =
 * [WordPress] Simplified sanitation for WordPress code review

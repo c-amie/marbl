@@ -11,7 +11,7 @@
 if (!defined( 'WP_UNINSTALL_PLUGIN' )) {
     exit ();
 }
-		private function getCountryCodes($strType) {
+		function getCountryCodes($strType) {
 			if ($strType === 'amazon') {
 				return ['AU', 'BR', 'CA', 'CN', 'DE', 'ES', 'FR', 'IN', 'IT', 'JP', 'MX', 'UK', 'US'];
 			} elseif ($strType === 'ebay') {
