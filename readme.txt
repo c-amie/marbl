@@ -1,7 +1,11 @@
-=== Marbl Affiliate Links ===
+=== Marbl ===
+Plugin Name: Marbl Affiliate Links
+Plugin URI: https://www.c-amie.co.uk/marbl/
 Contributors: camieuk
 Donate link: http://www.c-amie.co.uk/
 Tags: Amazon, eBay, link, monetization, affiliate
+Author: C:Amie
+Author URI: https://www.c-amie.co.uk/
 Requires at least: 4.7
 Tested up to: 6.8
 Stable tag: 0.9.22

@@ -1,9 +1,9 @@
 <?php
    /*
-   Plugin Name: Marbl Affiliate Links
+   Plugin Name: Marbl
    Plugin URI: http://www.c-amie.co.uk/marbl
    Description: Embeds a Multi-region Affiliate & Referral Buyers Link (Marbl) for Amazon and eBay. Embed a drop-list buyer link into the page at any point the shortcode is added. Page can include, none, 1 or 1000 different shortcodes. Written in pure JavaScript, with no external dependencies, tracking, privacy issues and no geo-location guesttimation - the user selects their preffered store from your Amazon Associates or eBay Partners list.
-   Version: 0.9.21
+   Version: 0.9.22
    Author: C:Amie
    Author URI: http://www.c-amie.co.uk/
    License: GPLv2 or later.
@@ -149,13 +149,13 @@
 				return 'You must provide a either an ASIN, ISBN or a Search String';
 				//die();
 			} else {
-				$strRegions		= utf8_encode(trim(str_replace(' ', '', $strRegions)));
+				$strRegions		= trim(str_replace(' ', '', $strRegions));
 				$strLabel		= str_replace('&amp;quot;', '"', $strLabel);	// Search for quotation marks &quot; coming in (double escaped) from Wordpress's sanitisation and restore to "
-				$strLabel		= utf8_encode(trim($strLabel));					// Make safe to paste into JavaScript
+				$strLabel		= trim($strLabel);					// Make safe to paste into JavaScript
 				$strFreetext	= str_replace('&amp;quot;', '"', $strFreetext);
-				$strFreetext	= utf8_encode(trim($strFreetext));
-				$strAsin		= utf8_encode(trim($strAsin));
-				$strIsbn		= utf8_encode(trim($strIsbn));
+				$strFreetext	= trim($strFreetext);
+				$strAsin		= trim($strAsin);
+				$strIsbn		= trim($strIsbn);
 				$iSize			= sprintf("%d", $strSize);						// Numeric or 0
 				switch (strtoupper($strDisplay)) {
 					case 'IMAGE':
@@ -219,7 +219,7 @@
 						marblAmazon.OpenInNewWindow = ' . ((get_option('marbl_general_link_open_new_window')) ? 'true' : 'false') . ';
 						marblAmazon.LinksNoFollow = ' . ((get_option('marbl_general_link_link_nofollow')) ? 'true' : 'false') . ';
 						' . $strDisclaimerCfg . '
-						marblAmazon.createLink(' . json_encode(esc_js($strRegions)) . ', ' . json_encode(esc_js($strLabel)) .', ' . json_encode(esc_js($strFreetext)) . ', ' . json_encode(esc_js($strAsin)) . ', ' . json_encode(esc_js($strIsbn)) . ', ' . esc_js($strSize) . ', ' . esc_js($strDisplay) . ');
+						marblAmazon.createLink(\'' . (esc_js($strRegions)) . '\', \'' . (esc_js($strLabel)) .'\', \'' . (esc_js($strFreetext)) . '\', \'' . (esc_js($strAsin)) . '\', \'' . (esc_js($strIsbn)) . '\', ' . esc_js($strSize) . ', ' . esc_js($strDisplay) . ');
 				</script>'; // Note: String parameters are not wrapped in " " because json_encode appends this itself
 			}
 		}
@@ -234,13 +234,13 @@
 				return 'You must provide a either an Item Number, Store Link ID or a Search String';
 				//die();
 			} else {
-				$strRegions		= utf8_encode(trim(str_replace(' ', '', $strRegions)));
+				$strRegions		= trim(str_replace(' ', '', $strRegions));
 				$strLabel		= str_replace('&amp;quot;', '"', $strLabel);	// Search for quotation marks &quot; coming in (double escaped) from Wordpress's sanitisation and restore to "
-				$strLabel		= utf8_encode(trim($strLabel));	// Make safe to paste into JavaScript
+				$strLabel		= trim($strLabel);	// Make safe to paste into JavaScript
 				$strFreetext	= str_replace('&amp;quot;', '"', $strFreetext);
-				$strFreetext	= utf8_encode(trim($strFreetext));
-				$strItemId		= utf8_encode(trim($strItemId));
-				$strStoreId		= utf8_encode(trim($strStoreId));
+				$strFreetext	= trim($strFreetext);
+				$strItemId		= trim($strItemId);
+				$strStoreId		= trim($strStoreId);
 				$iSize			= sprintf("%d", $strSize);		// Numeric or 0
 				switch (strtoupper($strDisplay)) {
 					case 'IMAGE':
@@ -312,7 +312,7 @@
 						marblEbay.OpenInNewWindow = ' . ((get_option('marbl_general_link_open_new_window')) ? 'true' : 'false') . ';
 						marblEbay.LinksNoFollow = ' . ((get_option('marbl_general_link_link_nofollow')) ? 'true' : 'false') . ';
 						' . $strDisclaimerCfg . '
-						marblEbay.createLink(' . json_encode(esc_js($strRegions)) . ', ' . json_encode(esc_js($strLabel)) .', ' . json_encode(esc_js($strFreetext)) . ', ' . json_encode(esc_js($strItemId)) . ', ' . json_encode(esc_js($strStoreId)) . ', ' . json_encode(esc_js($strSize)) . ', ' . json_encode(esc_js($strDisplay)) . ');
+						marblEbay.createLink(\'' . (esc_js($strRegions)) . '\', \'' . (esc_js($strLabel)) .'\', \'' . (esc_js($strFreetext)) . '\', \'' . (esc_js($strItemId)) . '\', \'' . (esc_js($strStoreId)) . '\', ' . (esc_js($strSize)) . ', ' . (esc_js($strDisplay)) . ');
 				</script>'; // Note: String parameters are not wrapped in " " because json_encode appends this itself
 			}
 		}
@@ -756,6 +756,8 @@
 <?php
 		}
 	} // end class
+	
+	if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 	// Instantiate and Go
 	$marbl = new Marbl();
