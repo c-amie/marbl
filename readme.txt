@@ -8,7 +8,7 @@ Author: C:Amie
 Author URI: https://www.c-amie.co.uk/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable tag: 0.9.22
+Stable tag: 0.9.23
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,10 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.9.23.20250904 =
+* [WordPress] Fixed skipped config removals from the database in the uninstall command due to syntax error
+* [WordPress] Switched plugin self location definition from using WP_PLUGIN_URL to plugin_dir_url()
 
 = 0.9.22.20250903 =
 * [WordPress] Changed minimum PHP version to 7.0

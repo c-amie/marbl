@@ -3,7 +3,7 @@
    Plugin Name: Marbl
    Plugin URI: http://www.c-amie.co.uk/marbl
    Description: Embeds a Multi-region Affiliate & Referral Buyers Link (Marbl) for Amazon and eBay. Embed a drop-list buyer link into the page at any point the shortcode is added. Page can include, none, 1 or 1000 different shortcodes. Written in pure JavaScript, with no external dependencies, tracking, privacy issues and no geo-location guesttimation - the user selects their preffered store from your Amazon Associates or eBay Partners list.
-   Version: 0.9.22
+   Version: 0.9.23
    Author: C:Amie
    Author URI: http://www.c-amie.co.uk/
    License: GPLv2 or later.
@@ -39,26 +39,26 @@
 		
 		protected $pluginPath;
 		protected $pluginUrl;
-		public static $Version = '0.9.21';
+		public static $Version = '0.9.23';
 		
 		public function __construct() {
 			// Set plugin Path
 			$this->pluginPath = dirname(__FILE__);
-			
+
 			// Set plugin URL
-			$this->pluginUrl = WP_PLUGIN_URL . '/marbl';
-			
+			$this->pluginUrl = rtrim(plugin_dir_url(__FILE__), '/');//plugins_url() . '/marbl';
+
 			// Register shortcode hook
-			add_shortcode( 'marbl', array($this, 'create_Link') );
+			add_shortcode('marbl', array($this, 'create_Link') );
 			
 			// Register Admin Settings
-			add_action( 'admin_init', array($this, 'marbl_register_settings') );
+			add_action('admin_init', array($this, 'marbl_register_settings') );
 			
 			// Register Admin UI Settings Page
 			add_action('admin_menu', array($this, 'marbl_link_register_options_page') );
 			
 			// Register required JavaScript & CSS
-			add_action( 'wp_enqueue_scripts', array($this, 'marblLink_scriptsStyles') );
+			add_action('wp_enqueue_scripts', array($this, 'marblLink_scriptsStyles') );
 		}
 		
 		public function shortcode() {
