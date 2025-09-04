@@ -220,7 +220,7 @@
 						marblAmazon.LinksNoFollow = ' . ((get_option('marbl_general_link_link_nofollow')) ? 'true' : 'false') . ';
 						' . $strDisclaimerCfg . '
 						marblAmazon.createLink(\'' . (esc_js($strRegions)) . '\', \'' . (esc_js($strLabel)) .'\', \'' . (esc_js($strFreetext)) . '\', \'' . (esc_js($strAsin)) . '\', \'' . (esc_js($strIsbn)) . '\', ' . esc_js($strSize) . ', ' . esc_js($strDisplay) . ');
-				</script>'; // Note: String parameters are not wrapped in " " because json_encode appends this itself
+				</script>';
 			}
 		}
 
@@ -612,6 +612,8 @@
             label=""		[&lt;freetext&gt;]				{Optional}<br />
             display=""	[IMAGE|TEXT|BOTH]				{Optional, default=IMAGE}<br />
             ]</code>
+            <p><strong>Valid Country Codes:</strong></p>
+            <code><?php echo esc_html(implode(', ', $arrCountryCodes));?></code>
             <h3>Examples</h3>
             <p>Create a link using all of your registered Associate ID's to a product search using the 16x16 icon</p>
             <code>[marbl type="amazon" search="Intel NUC"]</code>
@@ -728,6 +730,8 @@
             label=""		[&lt;freetext&gt;]				{Optional}<br />
             display=""		[IMAGE|TEXT|BOTH]				{Optional, default=IMAGE}<br />
             ]</code>
+            <p><strong>Valid Country Codes:</strong></p>
+            <code><?php echo esc_html(implode(', ', $arrCountryCodes));?></code>
             <h3>Examples</h3>
             <p>Create a link to a product search using the 16x16 icon</p>
             <code>[marbl type="ebay" search="Intel NUC"]</code>

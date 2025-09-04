@@ -53,7 +53,7 @@ The plugin features include:
 *   NO telemetry
 *   NO tracking
 *   NO redirecting of your affiliate scheme links EVER
-*   Customisable CSS/national flags via the specification of a custom resources folder
+*   Customisable CSS/national flag images via the specification of a custom resources folder
 
 For examples and the full documentation please visit https://www.c-amie.co.uk/marbl/
 
@@ -97,17 +97,20 @@ Head to https://epn.ebay.com and sign-up for your regional programme.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Sample page body showing an expanded Amazon Associates link
+2. Sample page body showing an expanded eBay Partnet Network link
+3. Marbl General settings
+4. Marbl Amazon Associates Settings
+5. eBay Partner Network (EPN) Settings
 
 == Changelog ==
 
 = 0.9.23.20250904 =
+* Corrected default 16x16 alignment in the sample CSS
 * [WordPress] Fixed skipped config removals from the database in the uninstall command due to syntax error
 * [WordPress] Switched plugin self location definition from using WP_PLUGIN_URL to plugin_dir_url()
+* [WordPress] Added list of legal county codes to the admin documentation sections for both eBay and Amazon
+* [JavaScript] Removed hard-coded CSS floats
 
 = 0.9.22.20250903 =
 * [WordPress] Changed minimum PHP version to 7.0
