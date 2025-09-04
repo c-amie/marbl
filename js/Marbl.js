@@ -453,10 +453,10 @@
 				} else {
 					lbl.appendChild(document.createTextNode(strFreetext));
 				}
-			if (((iDisplayMode & this.IMAGE) == this.IMAGE)) {
+			/*if (((iDisplayMode & this.IMAGE) == this.IMAGE)) {
 				img.style.styleFloat	= 'left';
 				img.style.cssFloat		= 'left';
-			}
+			}*/
 			div.appendChild(lbl);
 		}
 
@@ -985,10 +985,10 @@
 				} else {
 					lbl.appendChild(document.createTextNode(strFreetext));
 				}
-			if (((iDisplayMode & this.IMAGE) == this.IMAGE)) {
+			/*if (((iDisplayMode & this.IMAGE) == this.IMAGE)) {
 				img.style.styleFloat	= 'left';
 				img.style.cssFloat		= 'left';
-			}
+			}*/
 			div.appendChild(lbl);
 		}
 
